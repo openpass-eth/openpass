@@ -1,11 +1,9 @@
 "use client"
 import { NextPage } from "next"
-import useAccount from "../../hooks/useAccount"
+import useAccount from "../../hooks/useSmartAccount"
 
 const SignUpPage: NextPage = () => {
-  const { test } = useAccount()
   const handleSignUp = async () => {
-    test()
   }
 
   return (
