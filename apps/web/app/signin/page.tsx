@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -12,42 +12,49 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { WalletIcon, KeyIcon, AlertCircleIcon } from "lucide-react"
 
-export default function SignUpPage() {
+export default function SignInPage() {
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
     if (!username.trim()) {
-      setError("Please enter a username")
+      setError("Please enter your username")
       return
     }
 
     setIsLoading(true)
 
     try {
-      // Simulate passkey creation
+      // Simulate passkey authentication
       // In a real app, this would use the WebAuthn API
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      // Store user info (in a real app, this would be handled by your backend)
-      localStorage.setItem(
-        "wallet_user",
-        JSON.stringify({
-          username,
-          address: "0x" + Math.random().toString(16).substring(2, 42),
-          createdAt: new Date().toISOString(),
-        }),
-      )
+      // Check if user exists (in a real app, this would be handled by your backend)
+      const existingUser = localStorage.getItem("wallet_user")
+
+      if (!existingUser) {
+        setError("Wallet not found. Please create a new wallet.")
+        setIsLoading(false)
+        return
+      }
+
+      const userData = JSON.parse(existingUser)
+
+      if (userData.username !== username) {
+        setError("Username not found. Please check and try again.")
+        setIsLoading(false)
+        return
+      }
 
       // Redirect to dashboard
       router.push("/dashboard")
     } catch (err) {
-      setError("Failed to create wallet. Please try again.")
+      setError("Failed to sign in. Please try again.")
       setIsLoading(false)
     }
   }
@@ -63,14 +70,14 @@ export default function SignUpPage() {
           <h1 className="text-2xl font-bold">Abstraction Wallet</h1>
         </div>
 
-        {/* Sign Up Card */}
+        {/* Sign In Card */}
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Create Your Wallet</CardTitle>
-            <CardDescription>Set up your secure wallet with passkey authentication</CardDescription>
+            <CardTitle className="text-2xl">Welcome Back</CardTitle>
+            <CardDescription>Sign in to your wallet with passkey authentication</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSignUp} className="space-y-4">
+            <form onSubmit={handleSignIn} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
@@ -95,12 +102,12 @@ export default function SignUpPage() {
                 {isLoading ? (
                   <>
                     <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
-                    Creating Wallet...
+                    Authenticating...
                   </>
                 ) : (
                   <>
                     <KeyIcon className="mr-2" />
-                    Create Wallet with Passkey
+                    Sign In with Passkey
                   </>
                 )}
               </Button>
@@ -111,15 +118,15 @@ export default function SignUpPage() {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">What is a passkey?</span>
+                    <span className="bg-card px-2 text-muted-foreground">Secure Authentication</span>
                   </div>
                 </div>
 
                 <div className="text-sm text-muted-foreground space-y-2 bg-muted/50 p-4 rounded-lg">
-                  <p className="font-medium text-foreground">Secure & Simple</p>
+                  <p className="font-medium text-foreground">Quick & Safe</p>
                   <p>
-                    Passkeys use your device's biometric authentication (fingerprint, face ID) or PIN to securely access
-                    your wallet. No passwords needed!
+                    Use your device's biometric authentication to securely access your wallet. Your credentials never
+                    leave your device.
                   </p>
                 </div>
               </div>
@@ -127,11 +134,11 @@ export default function SignUpPage() {
           </CardContent>
         </Card>
 
-        {/* Sign In Link */}
+        {/* Sign Up Link */}
         <div className="text-center text-sm">
-          <span className="text-muted-foreground">Already have a wallet? </span>
-          <Link href="/signin" className="text-primary hover:underline font-medium">
-            Sign in
+          <span className="text-muted-foreground">Don't have a wallet? </span>
+          <Link href="/signup" className="text-primary hover:underline font-medium">
+            Create one now
           </Link>
         </div>
 
@@ -145,3 +152,4 @@ export default function SignUpPage() {
     </div>
   )
 }
+
