@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Copy, Check, ChevronDown, Settings, LogOut, User, Moon, Sun, Search, X } from "lucide-react"
+import { Bell, Copy, Check, ChevronDown, Settings, LogOut, User, Moon, Sun, Search, X, Wallet } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
@@ -47,7 +47,13 @@ export function DashboardHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center gap-4 border-b bg-background px-6">
-      <SidebarTrigger />
+      <SidebarTrigger className="hidden md:flex" />
+      <div className="flex items-center gap-2 md:hidden">
+        <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <Wallet className="size-5" />
+        </div>
+        <span className="text-lg font-bold tracking-tight">Abstraction</span>
+      </div>
       
       {/* Mobile Search Overlay */}
       {isSearchOpen ? (
