@@ -69,8 +69,9 @@ export const useTokenBalances = (address: Address | undefined) => {
 
   useEffect(() => {
     if (!address) return
+    if (balances.length > 0) return
     fetchBalances()
-  }, [address, fetchBalances]);
+  }, [address, fetchBalances, balances]);
 
 
   const fetchBalance = (address: Address) => {
