@@ -92,7 +92,7 @@ export default function SendPage() {
                       placeholder="0.00"
                       value={formData.amount}
                       onChange={(e) => handleInputChange("amount", e.target.value)}
-                      className="text-4xl font-bold bg-transparent border-none shadow-none p-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/50 w-full"
+                      className="text-4xl font-bold bg-transparent border-none shadow-none p-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/50 w-full dark:bg-transparent"
                       step="any"
                       min="0"
                       autoFocus
@@ -150,13 +150,13 @@ export default function SendPage() {
               {/* Recipient Input Section */}
               <div className="space-y-2">
                 <Label htmlFor="recipient" className="text-muted-foreground text-xs uppercase tracking-wider font-semibold ml-1">Recipient</Label>
-                <div className="relative">
+                <div className="relative bg-muted/30 rounded-2xl border border-transparent focus-within:border-primary/20 focus-within:bg-muted/50 transition-all">
                   <Input
                     id="recipient"
                     placeholder="0x..."
                     value={formData.recipient}
                     onChange={(e) => handleInputChange("recipient", e.target.value)}
-                    className="pl-10 h-12 font-mono bg-muted/30 border-transparent focus-visible:bg-background focus-visible:border-primary/20 transition-all rounded-xl"
+                    className="pl-10 h-12 font-mono bg-transparent border-none shadow-none focus-visible:ring-0 w-full dark:bg-transparent"
                   />
                   <Wallet className="absolute left-3 top-3.5 size-5 text-muted-foreground/70" />
                 </div>

@@ -143,7 +143,7 @@ export default function SwapPage() {
                   placeholder="0.0"
                   value={fromAmount}
                   onChange={(e) => handleFromAmountChange(e.target.value)}
-                  className="text-3xl font-bold bg-transparent border-none shadow-none p-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/30 w-full"
+                  className="text-3xl font-bold bg-transparent border-none shadow-none p-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/30 w-full dark:bg-transparent"
                 />
                 <Select value={fromToken} onValueChange={setFromToken}>
                   <SelectTrigger className="h-9 w-fit gap-2 border-none bg-background shadow-sm rounded-full px-3 focus:ring-0 min-w-[100px]">
@@ -201,7 +201,7 @@ export default function SwapPage() {
                   placeholder="0.0"
                   value={toAmount}
                   readOnly
-                  className="text-3xl font-bold bg-transparent border-none shadow-none p-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/30 w-full text-muted-foreground"
+                  className="text-3xl font-bold bg-transparent border-none shadow-none p-0 h-auto focus-visible:ring-0 placeholder:text-muted-foreground/30 w-full text-muted-foreground dark:bg-transparent"
                 />
                 <Select value={toToken} onValueChange={setToToken}>
                   <SelectTrigger className="h-9 w-fit gap-2 border-none bg-background shadow-sm rounded-full px-3 focus:ring-0 min-w-[100px]">
