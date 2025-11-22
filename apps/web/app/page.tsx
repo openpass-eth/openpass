@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ShieldCheckIcon, KeyIcon, ZapIcon, LockIcon, ArrowRightIcon, WalletIcon } from 'lucide-react'
+import { ShieldCheckIcon, KeyIcon, ZapIcon, LockIcon, ArrowRightIcon, WalletIcon, TrendingUp, Github } from 'lucide-react'
 
 export default function LandingPage() {
   return (
@@ -42,23 +42,23 @@ export default function LandingPage() {
       <section className="container mx-auto px-4 py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <Badge variant="secondary" className="text-sm">
-            Powered by Account Abstraction
+            Bank-Grade Security &bull; Account Abstraction
           </Badge>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance">
-            The Future of Crypto Wallets is Here
+            Store, Save, and Earn with <span className="text-primary">Bank-Grade Security</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-            Secure your digital assets with cutting-edge account abstraction technology and passwordless authentication. No seed phrases, no complexity.
+            The first crypto wallet with <strong>Password Recovery</strong>. No seed phrases, no anxiety. Just secure, simple, and powerful asset management.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button size="lg" asChild className="w-full sm:w-auto">
               <Link href="/signup">
-                Open App
+                Start Earning Now
                 <ArrowRightIcon className="ml-2" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="w-full sm:w-auto">
-              <Link href="#features">Learn More</Link>
+              <Link href="#features">Explore Features</Link>
             </Button>
           </div>
         </div>
@@ -80,11 +80,23 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary mb-4">
-                  <KeyIcon className="size-6" />
+                  <WalletIcon className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Passkey Authentication</h3>
+                <h3 className="text-xl font-semibold mb-2">Store & Save</h3>
                 <p className="text-muted-foreground">
-                  Login securely with biometrics or device authentication. No passwords to remember or lose.
+                  Securely store your digital assets with bank-grade encryption. Your savings, protected by the best technology.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-center size-12 rounded-lg bg-chart-3/10 text-chart-3 mb-4">
+                  <TrendingUp className="size-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Earn Yield</h3>
+                <p className="text-muted-foreground">
+                  Put your crypto to work. Earn passive income on your assets directly from your wallet with verified protocols.
                 </p>
               </CardContent>
             </Card>
@@ -94,21 +106,9 @@ export default function LandingPage() {
                 <div className="flex items-center justify-center size-12 rounded-lg bg-accent/10 text-accent mb-4">
                   <ShieldCheckIcon className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Account Abstraction</h3>
+                <h3 className="text-xl font-semibold mb-2">Password Recovery</h3>
                 <p className="text-muted-foreground">
-                  Advanced smart contract wallets that provide enhanced security and recovery options.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-center size-12 rounded-lg bg-chart-3/10 text-chart-3 mb-4">
-                  <ZapIcon className="size-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Lightning Fast</h3>
-                <p className="text-muted-foreground">
-                  Instant transactions with optimized gas fees and seamless multi-chain support.
+                  <strong>First in the world.</strong> Forget your password? No problem. Recover your account without needing a seed phrase.
                 </p>
               </CardContent>
             </Card>
@@ -116,11 +116,11 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-chart-4/10 text-chart-4 mb-4">
-                  <LockIcon className="size-6" />
+                  <KeyIcon className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Self-Custodial</h3>
+                <h3 className="text-xl font-semibold mb-2">Passkey Security</h3>
                 <p className="text-muted-foreground">
-                  You maintain full control of your assets. We never have access to your funds.
+                  Login with your face or fingerprint. No more passwords to remember, just secure biometric authentication.
                 </p>
               </CardContent>
             </Card>
@@ -128,13 +128,11 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-chart-5/10 text-chart-5 mb-4">
-                  <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
+                  <LockIcon className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">No Seed Phrases</h3>
+                <h3 className="text-xl font-semibold mb-2">Bank-Grade Protection</h3>
                 <p className="text-muted-foreground">
-                  Forget about writing down 12-24 words. Your wallet is secured by modern cryptography.
+                  Built on Account Abstraction smart contracts, audited by top firms to ensure your funds are always safe.
                 </p>
               </CardContent>
             </Card>
@@ -142,13 +140,11 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary mb-4">
-                  <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <Github className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Multi-Chain Support</h3>
+                <h3 className="text-xl font-semibold mb-2">Fully Open Source</h3>
                 <p className="text-muted-foreground">
-                  Manage assets across Ethereum, Polygon, Arbitrum, and more from a single interface.
+                  Transparency is key. Our code is fully open source and verifiable by anyone. Built by the community, for the community.
                 </p>
               </CardContent>
             </Card>
@@ -161,7 +157,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <Badge variant="secondary">Enterprise-Grade Security</Badge>
+              <Badge variant="secondary">Bank-Grade Security</Badge>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Your Assets, Protected by the Best
               </h2>
@@ -171,35 +167,29 @@ export default function LandingPage() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <div className="flex items-center justify-center size-6 rounded-full bg-primary/10 text-primary mt-0.5">
-                    <svg className="size-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
+                    <ShieldCheckIcon className="size-4" />
                   </div>
                   <div>
                     <p className="font-medium">Hardware-Level Security</p>
-                    <p className="text-sm text-muted-foreground">Passkeys leverage your device's secure enclave for maximum protection</p>
+                    <p className="text-sm text-muted-foreground">Passkeys leverage your device's secure enclave (FaceID, TouchID) for maximum protection.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="flex items-center justify-center size-6 rounded-full bg-primary/10 text-primary mt-0.5">
-                    <svg className="size-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
+                    <ShieldCheckIcon className="size-4" />
                   </div>
                   <div>
                     <p className="font-medium">Smart Contract Audited</p>
-                    <p className="text-sm text-muted-foreground">Our account abstraction contracts are audited by leading security firms</p>
+                    <p className="text-sm text-muted-foreground">Our account abstraction contracts are audited by leading security firms.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="flex items-center justify-center size-6 rounded-full bg-primary/10 text-primary mt-0.5">
-                    <svg className="size-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
+                    <ShieldCheckIcon className="size-4" />
                   </div>
                   <div>
                     <p className="font-medium">Social Recovery</p>
-                    <p className="text-sm text-muted-foreground">Recover your wallet through trusted guardians if you lose access</p>
+                    <p className="text-sm text-muted-foreground">Recover your wallet through trusted guardians if you lose access. Never lose your funds again.</p>
                   </div>
                 </li>
               </ul>
@@ -248,6 +238,12 @@ export default function LandingPage() {
               <p className="text-sm text-muted-foreground">
                 The next generation of crypto wallets, powered by account abstraction and passkeys.
               </p>
+              <div className="flex gap-4">
+                <Link href="https://github.com" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Github className="size-5" />
+                  <span className="sr-only">GitHub</span>
+                </Link>
+              </div>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Product</h3>
