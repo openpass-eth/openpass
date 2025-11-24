@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Address, Call, createPublicClient, hashMessage, Hex, http, PublicClient, zeroAddress } from "viem"
 import { BundlerClient, createBundlerClient, createWebAuthnCredential, SmartAccount, toWebAuthnAccount } from "viem/account-abstraction"
-import { ICredential, useCredentialStore } from "../stores/useCredentialStore"
+import { ICredential, useCredentialStore } from "../stores/use-credential-store"
 import { useTokenBalanceStore } from "./use-token-balance"
 import { baseSepolia } from "viem/chains"
 import { FactoryAbi, factoryAddress, PublicKey, serializePublicKey, toAbstractionSmartAccount, WalletAbi } from "@abstraction/onchain"

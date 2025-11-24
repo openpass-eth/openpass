@@ -7,7 +7,7 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { useSmartAccount } from "@/hooks/useSmartAccount"
+import { useSmartAccount } from "@/hooks/use-smart-account"
 import {
   DropdownMenu,
   DropdownMenuContent,

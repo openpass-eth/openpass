@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-import { useSmartAccount } from "@/hooks/useSmartAccount"
+import { useSmartAccount } from "@/hooks/use-smart-account"
 
 export function DashboardSidebar() {
   const pathname = usePathname()
