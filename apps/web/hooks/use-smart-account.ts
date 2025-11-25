@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
-import { Address, Call, createPublicClient, hashMessage, Hex, http, PublicClient, zeroAddress } from "viem"
+import { Address, Call, createPublicClient, hashMessage, Hex, http, PublicClient } from "viem"
 import { BundlerClient, createBundlerClient, createWebAuthnCredential, SmartAccount, toWebAuthnAccount } from "viem/account-abstraction"
 import { ICredential, useCredentialStore } from "../stores/use-credential-store"
 import { useTokenBalanceStore } from "./use-token-balance"
 import { baseSepolia } from "viem/chains"
-import { FactoryAbi, factoryAddress, PublicKey, serializePublicKey, toAbstractionSmartAccount, WalletAbi } from "@abstraction/onchain"
+import { PublicKey, serializePublicKey, toAbstractionSmartAccount, WalletAbi } from "@abstraction/onchain"
 import { WebAuthnP256 } from "ox"
 import { readContract } from "viem/actions"
 import { create } from "zustand"
@@ -91,21 +91,29 @@ export const useSmartAccount = () => {
       challenge: "0x1",
     })
     const walletId = hashMessage(res.raw.id)
+    
+    // Call backend API to get wallet by keyId
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const response = await fetch(`${apiUrl}/wallets/by-key/${walletId}`);
+    
+    if (!response.ok) {
+      throw new Error("Wallet not found");
+    }
+    
+    const data = await response.json();
+    
+    // Check if the keyId is the main key
+    if (!data.keyStatus?.isMainKey) {
+      throw new Error("This key is not authorized for this wallet");
+    }
+    
+    const walletAddress = data.wallet.address as Address;
+    
+    // Get the signer public key from the wallet contract
     const client = createPublicClient({
       chain: baseSepolia,
       transport: http()
     }) as PublicClient
-
-    const walletAddress = await readContract(client, {
-      abi: FactoryAbi,
-      address: factoryAddress,
-      functionName: "wallets",
-      args: [walletId],
-    }) as Address
-
-    if (walletAddress == zeroAddress) {
-      throw new Error("Wallet not found")
-    }
 
     const signerKey = await readContract(client, {
       abi: WalletAbi,

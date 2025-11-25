@@ -65,8 +65,7 @@ export type AbstractionSmartAccountImplementation = Assign<
 >
 
 export const toAbstractionSmartAccount = async (params: ToAbstractionAccountParameters): Promise<ToAbstractionSmartAccountReturnType> => {
-  const { client, signer, keyId } = params
-  let address = params.address
+  const { client, signer, keyId, address } = params
   const entryPoint = {
     abi: entryPoint07Abi,
     address: entryPoint07Address,
@@ -94,24 +93,13 @@ export const toAbstractionSmartAccount = async (params: ToAbstractionAccountPara
       })
     },
     async getAddress() {
-      const deployedWallet = await readContract(client, {
-        abi: FactoryAbi,
-        address: factoryAddress,
-        functionName: "wallets",
-        args: [keyId],
-      }) as Address
-
-      if (deployedWallet !== zeroAddress) {
-        return deployedWallet
+      if (address) {
+        return address;
       }
-
-      const publicKey = parsePublicKey(signer.publicKey)
-
-      address ??= computeAccountAddress(
-        publicKey.x,
-        publicKey.y
-      )
-      return address
+      
+      // Compute address from public key
+      const publicKey = parsePublicKey(signer.publicKey);
+      return computeAccountAddress(publicKey.x, publicKey.y);
     },
     async getFactoryArgs() {
       const publicKey = parsePublicKey(signer.publicKey)
