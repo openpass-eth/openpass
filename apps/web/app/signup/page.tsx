@@ -117,11 +117,18 @@ export default function SignUpPage() {
         </Card>
 
         {/* Sign In Link */}
-        <div className="text-center text-sm">
-          <span className="text-muted-foreground">Already have a wallet? </span>
-          <Link href="/signin" className="text-primary hover:underline font-medium">
-            Sign in
-          </Link>
+        <div className="text-center text-sm space-y-2">
+          <div>
+            <span className="text-muted-foreground">Already have a wallet? </span>
+            <Link href="/signin" className="text-primary hover:underline font-medium">
+              Sign in
+            </Link>
+          </div>
+          <div>
+            <Link href="/recover" className="text-muted-foreground hover:text-primary transition-colors">
+              Lost access to your wallet?
+            </Link>
+          </div>
         </div>
 
         {/* Back to Home */}

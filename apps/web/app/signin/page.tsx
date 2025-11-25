@@ -89,6 +89,11 @@ export default function SignInPage() {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
+              <div className="text-center">
+                <Link href="/recover" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Forgot your passkey?
+                </Link>
+              </div>
               <div className="space-y-4 pt-4">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">

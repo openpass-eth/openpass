@@ -70,10 +70,12 @@ export const useRecovery = () => {
    * 3. Call smart contract to initiate recovery with new keyId
    * 4. Update recovery state with pending status and completion time
    * 
+   * @param walletAddress - Address of the wallet to recover
    * @param password - Recovery password to verify
    * @param newPasskeyId - ID of the newly created passkey
    */
   const initiateRecovery = useCallback(async (
+    walletAddress: string,
     password: string,
     newPasskeyId: string
   ): Promise<void> => {

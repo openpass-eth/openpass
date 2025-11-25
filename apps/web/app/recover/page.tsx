@@ -14,6 +14,7 @@ import { createWebAuthnCredential } from 'viem/account-abstraction';
 
 export default function RecoverPage() {
   const router = useRouter();
+  const [walletAddress, setWalletAddress] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<'password' | 'passkey' | 'processing'>('password');
@@ -22,6 +23,11 @@ export default function RecoverPage() {
   const { initiateRecovery, loading } = useRecovery();
 
   const handlePasswordSubmit = async () => {
+    if (!walletAddress) {
+      toast.error('Please enter your wallet address');
+      return;
+    }
+
     if (!password) {
       toast.error('Please enter your recovery password');
       return;
@@ -47,7 +53,7 @@ export default function RecoverPage() {
       setNewPasskeyId(credential.id);
 
       // Initiate recovery process
-      await initiateRecovery(password, credential.id);
+      await initiateRecovery(walletAddress, password, credential.id);
 
       toast.success('Recovery initiated successfully');
       router.push('/reclaim');
@@ -91,7 +97,23 @@ export default function RecoverPage() {
           <CardContent className="space-y-6">
             {/* Password Step */}
             {step === 'password' && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="wallet-address">Wallet Address</Label>
+                  <Input
+                    id="wallet-address"
+                    type="text"
+                    placeholder="0x..."
+                    value={walletAddress}
+                    onChange={(e) => setWalletAddress(e.target.value)}
+                    className="h-12 font-mono"
+                    autoFocus
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Enter the wallet address you want to recover
+                  </p>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="recovery-password">Recovery Password</Label>
                   <div className="relative">
@@ -103,7 +125,6 @@ export default function RecoverPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
                       className="h-12 pr-10"
-                      autoFocus
                     />
                     <button
                       type="button"
@@ -125,7 +146,7 @@ export default function RecoverPage() {
                 <Button
                   onClick={handlePasswordSubmit}
                   className="w-full h-12"
-                  disabled={!password || loading}
+                  disabled={!walletAddress || !password || loading}
                 >
                   Continue
                 </Button>
@@ -134,7 +155,7 @@ export default function RecoverPage() {
 
             {/* Passkey Creation Step */}
             {step === 'passkey' && (
-              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="space-y-6">
                 <div className="space-y-4 p-4 rounded-xl bg-muted/50 border">
                   <div className="flex items-start gap-3">
                     <KeyRoundIcon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
@@ -188,7 +209,7 @@ export default function RecoverPage() {
 
             {/* Processing Step */}
             {step === 'processing' && (
-              <div className="py-8 text-center space-y-4 animate-in fade-in zoom-in-95 duration-500">
+              <div className="py-8 text-center space-y-4">
                 <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                   <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                 </div>
