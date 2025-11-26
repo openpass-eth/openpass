@@ -1,0 +1,17 @@
+{
+  "name": "@abstraction/database",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.0.0",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.0"
+  }
+}

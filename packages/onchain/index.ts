@@ -148,7 +148,7 @@ export const toAbstractionSmartAccount = async (params: ToAbstractionAccountPara
         }
       },
     }
-  })
+  }) as unknown as ToAbstractionSmartAccountReturnType
 }
 
 const WebAuthnAuth = [
@@ -190,8 +190,8 @@ export const toWebAuthnSignature = (signature: Hex, webauthn: WebAuthnP256.SignM
     {
       authenticatorData: webauthn.authenticatorData,
       clientDataJSON: webauthn.clientDataJSON,
-      challengeIndex: BigInt(webauthn.challengeIndex),
-      typeIndex: BigInt(webauthn.typeIndex),
+      challengeIndex: BigInt(webauthn.challengeIndex ?? 0),
+      typeIndex: BigInt(webauthn.typeIndex ?? 0),
       r,
       s
     },

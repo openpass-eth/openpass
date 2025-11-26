@@ -1,0 +1,22 @@
+{
+  "name": "indexer",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "viem": "latest",
+    "mongoose": "^8.0.0",
+    "dotenv": "^16.0.0",
+    "@abstraction/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

@@ -33,7 +33,7 @@ export default function SendPage() {
     token: "eth",
   })
 
-  const selectedToken = tokens.find((t) => t.id === formData.token) || tokens[0]
+  const selectedToken = tokens.find((t) => t.id === formData.token) || tokens[0]!
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -63,7 +63,7 @@ export default function SendPage() {
   }
 
   // Calculate fiat value
-  const fiatValue = formData.amount ? (parseFloat(formData.amount) * selectedToken.price).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : "$0.00"
+  const fiatValue = formData.amount && selectedToken ? (parseFloat(formData.amount) * selectedToken.price).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : "$0.00"
 
   return (
     <div className="max-w-md mx-auto py-8 px-4">
@@ -104,7 +104,7 @@ export default function SendPage() {
                        <Button 
                         type="button" 
                         variant="secondary" 
-                        size="xs" 
+                        size="sm" 
                         onClick={handleMaxAmount}
                         className="h-6 text-xs font-semibold bg-primary/10 text-primary hover:bg-primary/20 border-none"
                       >

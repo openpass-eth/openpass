@@ -91,7 +91,7 @@ export default function SignInPage() {
               )}
               <div className="text-center">
                 <Link href="/recover" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Forgot your passkey?
+                  Lost access to your wallet?
                 </Link>
               </div>
               <div className="space-y-4 pt-4">

@@ -26,21 +26,21 @@ const initConfig = async (credential: ICredential): Promise<Config> => {
   })
 
   const abstractionSmartAccount = await toAbstractionSmartAccount({
-    client,
-    signer,
+    client: client as any,
+    signer: signer as any,
     keyId: hashMessage(credential.id),
   })
 
   const bundlerClient = createBundlerClient({
-    account: abstractionSmartAccount,
-    client,
+    account: abstractionSmartAccount as any,
+    client: client as any,
     transport: http("https://api.candide.dev/public/v3/84532"),
   })
 
   return {
-    account: abstractionSmartAccount,
-    client,
-    bundlerClient
+    account: abstractionSmartAccount as any,
+    client: client as any,
+    bundlerClient: bundlerClient as any
   }
 }
 
@@ -86,6 +86,7 @@ export const useSmartAccount = () => {
     setCredential(credential)
   }, [setCredential])
 
+
   const loginSmartAccount = useCallback(async () => {
     const res = await WebAuthnP256.sign({
       challenge: "0x1",
@@ -97,7 +98,10 @@ export const useSmartAccount = () => {
     const response = await fetch(`${apiUrl}/wallets/by-key/${walletId}`);
     
     if (!response.ok) {
-      throw new Error("Wallet not found");
+      if (response.status === 404) {
+        throw new Error("Wallet not found");
+      }
+      throw new Error("Failed to fetch wallet data");
     }
     
     const data = await response.json();

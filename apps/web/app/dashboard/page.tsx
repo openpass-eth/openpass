@@ -8,6 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ArrowUpRight, ArrowDownLeft, ArrowRightLeft, TrendingUp, TrendingDown, ExternalLink, Plus, Wallet } from "lucide-react"
 import Link from "next/link"
 import { useTokenBalances } from "@/hooks/use-token-balance"
+import { useTransactions } from "@/hooks/use-transactions"
+import { useSmartAccount } from "@/hooks/use-smart-account"
 import { formatUnits } from "viem"
 
 // Mock data
@@ -80,8 +82,26 @@ const formatUSD = (usd?: string) => {
     : `$${n.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 };
 
+const formatTimestamp = (timestamp: Date) => {
+  const now = new Date();
+  const diff = now.getTime() - new Date(timestamp).getTime();
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  return 'Just now';
+};
+
 export default function DashboardPage() {
-  const { balances } = useTokenBalances("0x2239ECcB0d91c0C648b36b967Bb1ef38C5b2B13D")
+  const { config } = useSmartAccount();
+  const walletAddress = config?.account?.address;
+  
+  const { balances } = useTokenBalances(walletAddress);
+  const { transactions, isLoading: transactionsLoading } = useTransactions(walletAddress, 10);
   
   const balanceChange = "+12.5%"
   const totalUsdBalance = balances.reduce((acc, token) => acc + (token.balanceInUsd || 0), 0)
@@ -226,54 +246,61 @@ export default function DashboardPage() {
         <TabsContent value="history" className="space-y-4">
            <Card className="border-none shadow-sm bg-transparent">
              <CardContent className="p-0">
-               <div className="space-y-3">
-                 {mockTransactions.map((tx) => (
-                   <div
-                     key={tx.id}
-                     className="flex items-center justify-between p-4 rounded-xl border bg-card hover:bg-muted/30 transition-colors"
-                   >
-                     <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
-                       <div
-                         className={`flex size-10 items-center justify-center rounded-full shadow-sm shrink-0 ${
-                           tx.type === "send"
-                             ? "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400"
-                             : tx.type === "receive"
-                               ? "bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400"
-                               : "bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
-                         }`}
-                       >
-                         {tx.type === "send" && <ArrowUpRight className="size-5" />}
-                         {tx.type === "receive" && <ArrowDownLeft className="size-5" />}
-                         {tx.type === "swap" && <ArrowRightLeft className="size-5" />}
-                       </div>
-                       <div className="min-w-0">
-                         <p className="font-semibold capitalize text-base">{tx.type}</p>
-                         <p className="text-sm text-muted-foreground truncate">
-                           {tx.type === "send" && `To ${tx.to}`}
-                           {tx.type === "receive" && `From ${tx.from}`}
-                           {tx.type === "swap" && tx.amount}
-                         </p>
-                       </div>
-                     </div>
-                     <div className="text-right shrink-0 ml-2">
-                       <p
-                         className={`font-bold ${
-                           tx.type === "send"
-                             ? "text-red-600 dark:text-red-400"
-                             : tx.type === "receive"
-                               ? "text-green-600 dark:text-green-400"
-                               : "text-foreground"
-                         }`}
-                       >
-                         {tx.type !== "swap" ? tx.amount : tx.value}
-                       </p>
-                       <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground font-medium">
-                         <span>{tx.timestamp}</span>
-                       </div>
-                     </div>
+               {transactionsLoading ? (
+                 <div className="flex items-center justify-center p-12">
+                   <div className="flex flex-col items-center gap-3">
+                     <div className="size-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                     <p className="text-sm text-muted-foreground">Loading transactions...</p>
                    </div>
-                 ))}
-               </div>
+                 </div>
+               ) : transactions.length === 0 ? (
+                 <div className="flex flex-col items-center justify-center p-12 text-center">
+                   <div className="size-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
+                     <Wallet className="size-8 text-muted-foreground" />
+                   </div>
+                   <h3 className="font-semibold text-lg mb-2">No Transactions Yet</h3>
+                   <p className="text-sm text-muted-foreground max-w-sm">
+                     Your transaction history will appear here once you start using your wallet.
+                   </p>
+                 </div>
+               ) : (
+                 <div className="space-y-3">
+                   {transactions.map((tx) => (
+                     <div
+                       key={tx._id}
+                       className="flex items-center justify-between p-4 rounded-xl border bg-card hover:bg-muted/30 transition-colors"
+                     >
+                       <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                         <div
+                           className={`flex size-10 items-center justify-center rounded-full shadow-sm shrink-0 ${
+                             tx.success
+                               ? "bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400"
+                               : "bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400"
+                           }`}
+                         >
+                           <ArrowUpRight className="size-5" />
+                         </div>
+                         <div className="min-w-0">
+                           <p className="font-semibold capitalize text-base">
+                             {tx.success ? 'Transaction' : 'Failed'}
+                           </p>
+                           <p className="text-sm text-muted-foreground truncate font-mono">
+                             {tx.txHash.slice(0, 10)}...{tx.txHash.slice(-8)}
+                           </p>
+                         </div>
+                       </div>
+                       <div className="text-right shrink-0 ml-2">
+                         <p className="font-bold text-sm">
+                           Block #{tx.blockNumber}
+                         </p>
+                         <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground font-medium">
+                           <span>{formatTimestamp(tx.timestamp)}</span>
+                         </div>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               )}
              </CardContent>
            </Card>
         </TabsContent>
