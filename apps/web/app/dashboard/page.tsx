@@ -103,7 +103,9 @@ export default function DashboardPage() {
   const { balances, isLoading: balancesLoading } = useTokenBalances("0x4fff0f708c768a46050f9b96c46c265729d1a62f"); // for testing
   const { transactions, isLoading: transactionsLoading } = useTransactions(walletAddress, 10);
   
-  const balanceChange = "+12.5%"
+  const balanceChange = "-12.5%"
+  const balanceChangeValue = parseFloat(balanceChange)
+  const isPositiveChange = balanceChangeValue >= 0
   const totalUsdBalance = balances.reduce((acc, token) => acc + (token.balanceInUsd || 0), 0)
 
   return (
@@ -111,7 +113,7 @@ export default function DashboardPage() {
       
       {/* Hero Section */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="col-span-2 border-none shadow-xl bg-gradient-to-br from-primary/90 to-primary/70 text-primary-foreground overflow-hidden relative">
+        <Card className={`col-span-2 border-none shadow-xl bg-gradient-to-br from-primary/90 to-primary/70 text-primary-foreground overflow-hidden relative`}>
            <div className="absolute top-0 right-0 p-24 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
            <CardHeader className="pb-2">
              <CardDescription className="text-primary-foreground/80 font-medium">Total Balance</CardDescription>
@@ -119,8 +121,15 @@ export default function DashboardPage() {
            </CardHeader>
            <CardContent>
              <div className="flex items-center gap-2 text-sm mb-6">
-               <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-md gap-1 px-2 py-0.5">
-                 <TrendingUp className="size-3" />
+               <Badge 
+                 variant="secondary" 
+                 className={`${
+                   isPositiveChange 
+                     ? 'bg-green-500/20 hover:bg-green-500/30 text-green-100' 
+                     : 'bg-red-500/20 hover:bg-red-500/30 text-red-100'
+                 } border-none backdrop-blur-md gap-1 px-2 py-0.5`}
+               >
+                 {isPositiveChange ? <TrendingUp className="size-3" /> : <TrendingDown className="size-3" />}
                  {balanceChange}
                </Badge>
                <span className="text-primary-foreground/70">from last month</span>
