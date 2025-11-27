@@ -142,8 +142,8 @@ app.get('/stats', async (c) => {
 });
 
 // Connect to MongoDB and start server
-// const dbUri = process.env.DATABASE_URI || 'mongodb://localhost:27017/abstraction';
-// await mongoose.connect(dbUri);
+const dbUri = process.env.DATABASE_URI || 'mongodb://localhost:27017/abstraction';
+await mongoose.connect(dbUri);
 console.log('Connected to MongoDB');
 
 const port = parseInt(process.env.PORT || '3000');
