@@ -5,6 +5,9 @@ import { Analytics } from "@vercel/analytics/next"
 import Providers from "./providers"
 import "./globals.css"
 
+const _geist = Geist({ subsets: ["latin"] })
+const _geistMono = Geist_Mono({ subsets: ["latin"] })
+
 // Updated metadata for Openpass Wallet
 export const metadata: Metadata = {
   title: "Openpass Wallet - Secure Crypto Wallet with Passkey",
