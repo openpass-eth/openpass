@@ -5,9 +5,6 @@ import { Analytics } from "@vercel/analytics/next"
 import Providers from "./providers"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
-
 // Updated metadata for Openpass Wallet
 export const metadata: Metadata = {
   title: "Openpass Wallet - Secure Crypto Wallet with Passkey",
@@ -16,19 +13,15 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
+        url: "/logo.png",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/icon-dark-32x32.png",
+        url: "/logo-dark.png",
         media: "(prefers-color-scheme: dark)",
       },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
     ],
-    apple: "/apple-icon.png",
+    apple: "/logo.png",
   },
 }
 

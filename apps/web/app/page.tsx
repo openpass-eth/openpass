@@ -2,8 +2,10 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ShieldCheckIcon, KeyIcon, ZapIcon, LockIcon, ArrowRightIcon, WalletIcon, TrendingUp, Github } from 'lucide-react'
+import { ShieldCheckIcon, KeyIcon, ZapIcon, LockIcon, ArrowRightIcon, WalletIcon, TrendingUp, Github, Network, Code, Globe, LockOpen } from 'lucide-react'
 import { AntigravityBackground } from '@/components/ui/background'
+import Image from 'next/image'
+import { Logo } from '@/components/ui/logo'
 
 export default function LandingPage() {
   return (
@@ -13,9 +15,7 @@ export default function LandingPage() {
       <header className="border-b bg-background/40 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center size-10 rounded-lg bg-primary text-primary-foreground">
-              <WalletIcon className="size-6" />
-            </div>
+            <Logo width={30} height={30} />
             <span className="text-xl font-bold">Openpass Wallet</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
@@ -44,13 +44,13 @@ export default function LandingPage() {
       <section className="container mx-auto px-4 py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <Badge variant="secondary" className="text-sm">
-            Bank-Grade Security &bull; Account Abstraction
+            Open Source &bull; Permissionless &bull; Secure
           </Badge>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance">
-            Store, Save, and Earn with <span className="text-primary">Bank-Grade Security</span>
+            Your Ethereum <span className="text-primary">Saving Account</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-            The first crypto wallet with <strong>Password Recovery</strong>. No seed phrases, no anxiety. Just secure, simple, and powerful asset management.
+            Built with <strong>decentralized</strong> and <strong>permissionless</strong> in mind. No one can stop you from operating your crypto.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button size="lg" asChild className="w-full sm:w-auto">
@@ -84,9 +84,9 @@ export default function LandingPage() {
                 <div className="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary mb-4">
                   <WalletIcon className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Store & Save</h3>
+                <h3 className="text-xl font-semibold mb-2">Self-Custody</h3>
                 <p className="text-muted-foreground">
-                  Securely store your digital assets with bank-grade encryption. Your savings, protected by the best technology.
+                  You own your keys. No middlemen, no centralized servers holding your funds. Pure ownership.
                 </p>
               </CardContent>
             </Card>
@@ -96,9 +96,9 @@ export default function LandingPage() {
                 <div className="flex items-center justify-center size-12 rounded-lg bg-chart-3/10 text-chart-3 mb-4">
                   <TrendingUp className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Earn Yield</h3>
+                <h3 className="text-xl font-semibold mb-2">Permissionless Yield</h3>
                 <p className="text-muted-foreground">
-                  Put your crypto to work. Earn passive income on your assets directly from your wallet with verified protocols.
+                  Access decentralized finance protocols directly. Earn yield without asking for permission.
                 </p>
               </CardContent>
             </Card>
@@ -106,11 +106,11 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-accent/10 text-accent mb-4">
-                  <ShieldCheckIcon className="size-6" />
+                  <LockOpen className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Password Recovery</h3>
+                <h3 className="text-xl font-semibold mb-2">Censorship Resistant</h3>
                 <p className="text-muted-foreground">
-                  <strong>First in the world.</strong> Forget your password? No problem. Recover your account without needing a seed phrase.
+                  No one can freeze your account or stop your transactions. Your money, your rules.
                 </p>
               </CardContent>
             </Card>
@@ -122,7 +122,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Passkey Security</h3>
                 <p className="text-muted-foreground">
-                  Login with your face or fingerprint. No more passwords to remember, just secure biometric authentication.
+                  Secure your account with hardware-level security (FaceID, TouchID). Simple yet unbreakable.
                 </p>
               </CardContent>
             </Card>
@@ -130,11 +130,11 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-chart-5/10 text-chart-5 mb-4">
-                  <LockIcon className="size-6" />
+                  <Network className="size-6" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Bank-Grade Protection</h3>
+                <h3 className="text-xl font-semibold mb-2">Decentralized</h3>
                 <p className="text-muted-foreground">
-                  Built on Account Abstraction smart contracts, audited by top firms to ensure your funds are always safe.
+                  Built on Ethereum. Leveraging the security and immutability of the world's leading blockchain.
                 </p>
               </CardContent>
             </Card>
@@ -142,11 +142,11 @@ export default function LandingPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary mb-4">
-                  <Github className="size-6" />
+                  <Code className="size-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Fully Open Source</h3>
                 <p className="text-muted-foreground">
-                  Transparency is key. Our code is fully open source and verifiable by anyone. Built by the community, for the community.
+                  Verify, don't trust. Anyone can audit our code or run it themselves. Community-driven development.
                 </p>
               </CardContent>
             </Card>
@@ -159,21 +159,30 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <Badge variant="secondary">Bank-Grade Security</Badge>
+              <Badge variant="secondary">Unstoppable Security</Badge>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                Your Assets, Protected by the Best
+                Your Keys, Your Crypto
               </h2>
               <p className="text-lg text-muted-foreground">
-                Openpass Wallet combines account abstraction with passkey technology to create the most secure and user-friendly crypto wallet experience.
+                Openpass Wallet empowers you with true ownership. We provide the tools, but you hold the power.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <div className="flex items-center justify-center size-6 rounded-full bg-primary/10 text-primary mt-0.5">
-                    <ShieldCheckIcon className="size-4" />
+                    <Globe className="size-4" />
                   </div>
                   <div>
-                    <p className="font-medium">Hardware-Level Security</p>
-                    <p className="text-sm text-muted-foreground">Passkeys leverage your device's secure enclave (FaceID, TouchID) for maximum protection.</p>
+                    <p className="font-medium">Permissionless Access</p>
+                    <p className="text-sm text-muted-foreground">Anyone can use Openpass. No gatekeepers, no KYC, no restrictions.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="flex items-center justify-center size-6 rounded-full bg-primary/10 text-primary mt-0.5">
+                    <Code className="size-4" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Open Source & Verifiable</p>
+                    <p className="text-sm text-muted-foreground">Our code is public. Anyone can run it, audit it, and verify its security.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -181,17 +190,8 @@ export default function LandingPage() {
                     <ShieldCheckIcon className="size-4" />
                   </div>
                   <div>
-                    <p className="font-medium">Smart Contract Audited</p>
-                    <p className="text-sm text-muted-foreground">Our account abstraction contracts are audited by leading security firms.</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center size-6 rounded-full bg-primary/10 text-primary mt-0.5">
-                    <ShieldCheckIcon className="size-4" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Social Recovery</p>
-                    <p className="text-sm text-muted-foreground">Recover your wallet through trusted guardians if you lose access. Never lose your funds again.</p>
+                    <p className="font-medium">Self-Sovereign Recovery</p>
+                    <p className="text-sm text-muted-foreground">Recover your wallet using your own trusted devices or guardians. You are in control.</p>
                   </div>
                 </li>
               </ul>
@@ -200,7 +200,7 @@ export default function LandingPage() {
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 via-accent/20 to-chart-3/20 p-8 flex items-center justify-center">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-                  <ShieldCheckIcon className="size-48 text-primary relative z-10" />
+                  <Globe className="size-48 text-primary relative z-10" />
                 </div>
               </div>
             </div>
@@ -232,9 +232,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <div className="flex items-center justify-center size-8 rounded-lg bg-primary text-primary-foreground">
-                  <WalletIcon className="size-5" />
-                </div>
+                <Logo width={24} height={24} />
                 <span className="font-bold">Openpass Wallet</span>
               </div>
               <p className="text-sm text-muted-foreground">
