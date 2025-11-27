@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, use } from "react"
+import { useState, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { 
   ArrowUpRight, 
   ArrowDownLeft, 
@@ -55,8 +56,9 @@ const getTokenData = (symbol: string) => {
   }
 }
 
-export default function TokenDetailsPage({ params }: { params: Promise<{ symbol: string }> }) {
-  const { symbol } = use(params)
+function TokenDetails() {
+  const searchParams = useSearchParams()
+  const symbol = searchParams.get("symbol") || "ETH"
   const token = getTokenData(symbol)
   const [timeRange, setTimeRange] = useState("1D")
   const [swapAmount, setSwapAmount] = useState("")
@@ -299,5 +301,13 @@ export default function TokenDetailsPage({ params }: { params: Promise<{ symbol:
         </div>
       </div>
     </div>
+  )
+}
+
+export default function TokenDetailsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading token data...</div>}>
+      <TokenDetails />
+    </Suspense>
   )
 }
