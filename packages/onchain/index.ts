@@ -2,43 +2,21 @@ import { bytesToHex, concat, encodeAbiParameters, encodeFunctionData, encodePack
 import FactoryAbi from "./Factory.abi.json";
 import WalletAbi from "./Wallet.abi.json";
 import type * as WebAuthnP256 from 'ox/WebAuthnP256'
-import { entryPoint07Abi, entryPoint07Address, getUserOperationHash, toSmartAccount, type SmartAccount, type SmartAccountImplementation, type WebAuthnAccount } from "viem/account-abstraction";
-import { readContract } from "viem/actions";
+import { entryPoint08Abi, entryPoint08Address, getUserOperationHash, toSmartAccount, type SmartAccount, type SmartAccountImplementation, type WebAuthnAccount } from "viem/account-abstraction";
 import { Signature } from "ox";
 import { numberToBytesBE } from "@noble/curves/utils.js";
 import { getFactoryAddress } from "@openpass/utils";
 
 export const accountInitCodeHash: Hex = "0xceb9daa00a2c3992e663e03258dbdb5117cc1e35cff5afbc6b919bd0ba9fa45c"
 
-export const computeAccountAddress = (x: bigint, y: bigint): Address => {
-  const salt = keccak256(encodePacked(["uint256", "uint256"], [x, y]))
-  return getContractAddress({
-    opcode: "CREATE2",
-    from: getFactoryAddress(),
-    salt,
-    bytecodeHash: accountInitCodeHash
-  })
-}
-
-export const computeInitCode = async (publicClient: PublicClient, accountAddress: Address, x: bigint, y: bigint): Promise<Hex> => {
-  const accountCode = await publicClient.getCode({ address: accountAddress })
-  if (accountCode != undefined || accountCode !== "0x") {
-    return "0x"
-  }
-  const initCode = concat([getFactoryAddress(), encodeFunctionData({
-    abi: FactoryAbi,
-    functionName: "createWallet",
-    args: [x, y]
-  })])
-
-  return initCode
-}
+export const implement: Address = "0x2D95FE5cEd64b4fa3c422e45b7b184495f922564"
 
 export type ToAbstractionAccountParameters = {
-  address?: Address,
+  address: Address,
+  initialData?: Hex,
   client: AbstractionSmartAccountImplementation['client'],
   signer: WebAuthnAccount,
-  keyId: string
+  signerIndex?: number,
 }
 
 export type ToAbstractionSmartAccountReturnType = Prettify<
@@ -54,8 +32,8 @@ export type PublicKey = {
 
 export type AbstractionSmartAccountImplementation = Assign<
   SmartAccountImplementation<
-    typeof entryPoint07Abi,
-    '0.7',
+    typeof entryPoint08Abi,
+    '0.8',
     { abi: typeof WalletAbi; factory: { abi: typeof FactoryAbi; address: Address } }
   >,
   {
@@ -65,11 +43,11 @@ export type AbstractionSmartAccountImplementation = Assign<
 >
 
 export const toAbstractionSmartAccount = async (params: ToAbstractionAccountParameters): Promise<ToAbstractionSmartAccountReturnType> => {
-  const { client, signer, keyId, address } = params
+  const { client, signer, address, initialData, signerIndex } = params
   const entryPoint = {
-    abi: entryPoint07Abi,
-    address: entryPoint07Address,
-    version: '0.7',
+    abi: entryPoint08Abi,
+    address: entryPoint08Address,
+    version: '0.8',
   } as const;
 
   return toSmartAccount({
@@ -83,7 +61,6 @@ export const toAbstractionSmartAccount = async (params: ToAbstractionAccountPara
       }
     },
     async encodeCalls(calls) {
-
       return encodeFunctionData({
         abi: WalletAbi,
         functionName: 'executeBatch',
@@ -93,30 +70,20 @@ export const toAbstractionSmartAccount = async (params: ToAbstractionAccountPara
       })
     },
     async getAddress() {
-      if (address) {
-        return address;
-      }
-      
-      // Compute address from public key
-      const publicKey = parsePublicKey(signer.publicKey);
-      return computeAccountAddress(publicKey.x, publicKey.y);
+      return address;
     },
     async getFactoryArgs() {
-      const publicKey = parsePublicKey(signer.publicKey)
-
-      const factoryData = encodeFunctionData({
-        abi: FactoryAbi,
-        functionName: 'createWallet',
-        args: [keyId, publicKey.x, publicKey.y],
-      })
-      return { factory: getFactoryAddress(), factoryData }
+      return {
+        factory: "0x7702",
+        factoryData: initialData || "0x"
+      }
     },
     async getStubSignature() {
       return "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000170000000000000000000000000000000000000000000000000000000000000001949fc7c88032b9fcb5f6efc7a7b8c63668eae9871b765e23123bb473ff57aa831a7c0d9276168ebcc29f2875a0239cffdf2a9cd1c2007c5c77c071db9264df1d000000000000000000000000000000000000000000000000000000000000002549960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97630500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008a7b2274797065223a22776562617574686e2e676574222c226368616c6c656e6765223a2273496a396e6164474850596759334b7156384f7a4a666c726275504b474f716d59576f4d57516869467773222c226f726967696e223a2268747470733a2f2f7369676e2e636f696e626173652e636f6d222c2263726f73734f726967696e223a66616c73657d00000000000000000000000000000000000000000000"
     },
     async signTypedData(params) {
-      const res = await signer.signTypedData(params)
-      return res.signature
+      const { signature, webauthn } = await signer.signTypedData(params)
+      return toWebAuthnSignature(signature, webauthn, signerIndex)
     },
     async signUserOperation(params) {
       const { chainId = client.chain!.id, ...userOperation } = params
@@ -132,11 +99,11 @@ export const toAbstractionSmartAccount = async (params: ToAbstractionAccountPara
       })
 
       const { signature, webauthn } = await signer.sign({ hash: userOpHash })
-      return toWebAuthnSignature(signature, webauthn)
+      return toWebAuthnSignature(signature, webauthn, signerIndex)
     },
     async signMessage(params) {
-      const res = await signer.signMessage(params)
-      return res.signature
+      const { signature, webauthn } = await signer.signMessage(params)
+      return toWebAuthnSignature(signature, webauthn, signerIndex)
     },
     userOperation: {
       async estimateGas(userOperation) {
@@ -184,7 +151,7 @@ const WebAuthnAuth = [
   },
 ];
 
-export const toWebAuthnSignature = (signature: Hex, webauthn: WebAuthnP256.SignMetadata): Hex => {
+export const toWebAuthnSignature = (signature: Hex, webauthn: WebAuthnP256.SignMetadata, index: number = 0): Hex => {
   const { r, s } = Signature.fromHex(signature)
   const res = encodeAbiParameters(WebAuthnAuth, [
     {
@@ -197,7 +164,29 @@ export const toWebAuthnSignature = (signature: Hex, webauthn: WebAuthnP256.SignM
     },
   ]);
 
-  return res
+  return encodeAbiParameters(
+    [
+      {
+        components: [
+          {
+            name: 'index',
+            type: 'uint8',
+          },
+          {
+            name: 'signature',
+            type: 'bytes',
+          },
+        ],
+        type: 'tuple',
+      },
+    ],
+    [
+      {
+        index,
+        signature: res,
+      },
+    ],
+  )
 }
 
 export const parsePublicKey = (publicKey: Hex | Uint8Array): PublicKey => {
